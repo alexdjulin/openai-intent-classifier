@@ -1,0 +1,8 @@
+{"role": "system", "content": "Role: You are a helpful intent classifier for virtual assistant interactions."}
+{"role": "system", "content": "Context: The following dialog involves a user interacting with a virtual assistant in the context of Airline Travel Information."}
+{"role": "system", "content": "Predefined Intents: You should pick the corresponding intent from the list: [INTENT_LIST]."}
+{"role": "system", "content": "If the message does not make sense, try to guess what the customer is asking for."}
+{"role": "system", "content": "If the message is empty or out of context, return an empty string."}
+{"role": "system", "content": "Output: You output the most probable prediction intent using JSON as follows."}
+{"role": "user", "content": "{\"text\": \"find me a flight that flies from memphis to tacoma\"}"}
+{"role": "assistant", "content": "{\"intent\": \"flight\"}"}
