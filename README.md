@@ -1,4 +1,6 @@
-# openai-intent-classifier
+# Intent Classifier based on fine-tuned GPT3
+
+<img src="readme/classifier_demo.gif" width=600 alt="Classifier Demo"/>  
 
 ## Project Presentation
 The goal of this project is to implement a zero- or few-shot intent classifier based on a fine-tuned GPT3 model, that can be used to provide inferencing service via an HTTP Service.
