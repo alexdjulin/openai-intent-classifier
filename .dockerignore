@@ -1,0 +1,13 @@
+__pycache__
+.venv
+.git
+atis_dataset
+fine_tuning
+readme
+*.pyc
+*.pyo
+*.env
+*.ipynb
+.gitignore
+README.md
+history.jsonl
