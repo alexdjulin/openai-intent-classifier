@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Intent Classifier</title>
+
+    <!-- CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .input-field, .output-field {
+            margin-bottom: 20px;
+        }
+        .output-field {
+            margin-left: 10px;
+        }
+        #processing-message {
+            margin-left: 10px;
+            font-style: italic;
+            font-size: smaller;
+            display: none;
+        }
+        .error-field {
+            font-style: bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Add UI elements -->
+        <h1>Intent Classifier</h1>
+        <p>Model: <b>{{ model_id }}</b></p>
+        <p>Intent List: <b>{{ intent_list }}</b></p>
+        <div class="input-field">
+            <label for="message">Enter your message (ctrl/enter to send):</label>
+            <textarea id="message" name="message" rows="10" style="width: 100%;" onkeydown="checkForCtrlEnter(event)">I need help with my flight</textarea>
+        </div>
+        <div class="input-field">
+            <button onclick="classifyIntent()">Send</button>
+            <span id="processing-message">Processing request...</span>
+        </div>
+        <div class="output-field">
+            <span id="intents-label"  style="display: none">Predicted Intent: </span><span id="intents"></span>
+        </div>
+        <div class="error-field" id="error-message"></div>
+
+    </div>
+
+    <script>
+        function checkForCtrlEnter(event) {
+            // Send the message when Ctrl+Enter is pressed
+            if (event.ctrlKey && event.key === 'Enter') {
+                classifyIntent();
+                event.preventDefault();
+            }
+        }
+        
+        async function classifyIntent() {
+            // Get UI elements values
+            const message = document.getElementById('message').value;
+            const processingMessage = document.getElementById('processing-message');
+            const intentsLabel = document.getElementById('intents-label');
+            const intents = document.getElementById('intents');
+            const errorMessage = document.getElementById('error-message');
+            
+            // Show feedback message, hide intents and error messages during processing
+            processingMessage.style.display = 'inline';
+            intentsLabel.style.display = 'none';
+            intents.innerHTML = '';
+            errorMessage.textContent = '';
+            
+            try {
+                // Send message to the server
+                const response = await fetch('/intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text: message })
+                });
+                
+                // Handle response
+                const result = await response.json();
+
+                if (!response.ok) {
+                    // Handle error response
+                    throw result;
+                }
+
+                // Display intents if request was successful
+                displayIntents(result.intent);
+
+            } catch (error) {
+                // Handle request errors
+                displayError(error);
+            }
+
+            processingMessage.style.display = 'none';  // Hide processing message when done
+        }
+        
+        function displayIntents(intent) {
+            // Get UI elements
+            const intentsLabel = document.getElementById('intents-label');
+            const intents = document.getElementById('intents');
+            
+            // Display intent
+            intents.innerHTML = `<b>${intent}</b>`;
+            
+            // Show the label and intent, hide processing message at the end
+            intentsLabel.style.display = 'inline';
+            intents.style.display = 'inline';
+        }
+        
+        function displayError(error) {
+            // Get UI element
+            const errorMessage = document.getElementById('error-message');
+
+            if (error.label && error.message) {
+                // Display error message as passed by the flask server
+                errorMessage.textContent = `${error.label}: ${error.message}`;
+            } else {
+                // Display a generic error message for unknown errors
+                errorMessage.textContent = 'INTERNAL_ERROR: An unknown error occurred.';
+            }
+        }
+
+    </script>
+    
+</body>
+</html>

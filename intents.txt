@@ -1,0 +1,8 @@
+abbreviation
+aircraft
+airfare
+airline
+flight
+flight_time
+ground_service
+quantity
