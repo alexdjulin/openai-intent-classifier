@@ -44,7 +44,7 @@ def intent() -> tuple:
     POST request, predicts the intent of the text message.
 
     Returns:
-        tuple: JSON response with the list of predicted intents, response code
+        tuple: JSON response with predicted intent, response code
 
     Raises:
         400: Bad Request (body or 'text' key missing)

@@ -18,7 +18,7 @@ prompt_history_jsonl = 'history.jsonl'
 
 class IntentClassifier:
     '''
-    Class to predict a list of intents from a text message using OpenAI's API.
+    Class to predict the intent from a text message using OpenAI's API.
     '''
 
     def __init__(self) -> None:
@@ -76,7 +76,7 @@ class IntentClassifier:
 
         Args:
             model (str): Name of the OpenAI model.
-            intent_list (list): List of intents to classify.
+            intent_list (list): List of intents to classify. Loaded from file if not provided.
 
         Raises:
             Exception: If the list cannot be loaded.
@@ -111,14 +111,14 @@ class IntentClassifier:
         '''
 
         self.prompt = []
-        
+
         try:
             with open(prompt_jsonl, 'r') as file:
                 for line in file.readlines():
                     if 'INTENT_LIST' in line:
                         line = line.replace('INTENT_LIST', ', '.join(self.intents_list))
                     self.prompt.append(json.loads(line))
-                    
+
             LOG.debug(self.prompt)
             LOG.info('Prompt loaded successfully.')
 
@@ -134,8 +134,8 @@ class IntentClassifier:
             text (str): Text message to classify.
 
         Returns:
-            dict: List of predicted intents.
-        
+            dict: predicted intent as JSON object.
+
         Raises:
             ValueError: If no intents are returned from the completion call.
             Exception: If the history file cannot be saved.
