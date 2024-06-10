@@ -91,7 +91,8 @@ class IntentClassifier:
             # load the intent list from the text file
             try:
                 with open('intents.txt', 'r') as file:
-                    intent_list = [line.strip() for line in file.readlines()]
+                    intent_list = [line.strip() for line in file.readlines() if line.strip()]
+                    intent_list.append('None')
                     LOG.debug(f"Loaded intents list: {self.intents_list}")
 
             except Exception as e:
@@ -173,7 +174,7 @@ class IntentClassifier:
             LOG.debug(f"Model response: {response_json}")
 
             # exit function if no intents are returned (text cannot be classified)
-            if not response_json or not response_json['intent']:
+            if response_json['intent'] == 'None' or response_json['intent'] not in self.intents_list:
                 raise ValueError("No intents returned from completion call.")
 
         except Exception as e:

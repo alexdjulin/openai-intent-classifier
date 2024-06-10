@@ -15,7 +15,9 @@ def index() -> str:
     '''
     Render index.html
     '''
-    return render_template('index.html', model_id=model.model_id, intent_list=', '.join(model.intents_list))
+    model_id = model.model_id
+    intent_list = ', '.join([intent for intent in model.intents_list if intent != 'None'])
+    return render_template('index.html', model_id=model_id, intent_list=intent_list)
 
 
 @app.route('/ready')
