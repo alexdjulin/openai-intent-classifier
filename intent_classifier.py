@@ -165,7 +165,7 @@ class IntentClassifier:
                 max_tokens=1000,
                 temperature=0,
                 top_p=1,
-                frequency_penalty=0.5,
+                frequency_penalty=0,
                 presence_penalty=0,
             )
 
