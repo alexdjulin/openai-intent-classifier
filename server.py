@@ -16,7 +16,7 @@ def index() -> str:
     Render index.html
     '''
     model_id = model.model_id
-    intent_list = ', '.join([intent for intent in model.intents_list if intent != 'None'])
+    intent_list = ', '.join([intent for intent in model.intents_list if intent != 'none'])
     return render_template('index.html', model_id=model_id, intent_list=intent_list)
 
 
