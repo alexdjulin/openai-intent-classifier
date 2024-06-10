@@ -61,8 +61,8 @@ def intent() -> tuple:
         if response.status_code != 200:
             raise Exception()
     except Exception:
-        LOG.error('Model not ready.')
-        return jsonify({"label": "MODEL_NOT_READY", "message": "Model not ready"}), 423
+        LOG.error('Model not ready. Check the model name-id.')
+        return jsonify({"label": "MODEL_NOT_READY", "message": "Model is not ready, check the model name-id."}), 423
 
     # fetch the text from the request
     try:
@@ -87,7 +87,7 @@ def intent() -> tuple:
         result = model.predict_intent(text)
         print('RESULT', result)
         if result is None:
-            raise Exception("Failed to predict intent. Question is out of context?")
+            raise Exception("Failed to predict intent. Unclear, inappropriate or out-of-context question?")
 
     except Exception as e:
         LOG.error(f"Error predicting intent: {e}")
